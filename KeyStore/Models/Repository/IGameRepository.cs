@@ -2,6 +2,6 @@
 {
     public interface IGameRepository
     {
-        IQueryable<Game> Game { get; }
+        ICollection<Game> GetGames { get; }
     }
 }

@@ -18,9 +18,13 @@ namespace KeyStore.Controllers
         }
 
         [HttpGet(Name = "GetGames")]
-        public IEnumerable<Game> Get()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Game>))]
+        public IActionResult Get()
         {
-            return _gameRepository.Game.ToList();
+            var games = _gameRepository.GetGames;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(games);
         }
     }
 }

@@ -7,6 +7,6 @@
         {
             _context = context;
         }
-        public IQueryable<Game> Game => _context.Game;
+        public ICollection<Game> GetGames => _context.Game.OrderBy(p => p.id).ToList();
     }
 }
