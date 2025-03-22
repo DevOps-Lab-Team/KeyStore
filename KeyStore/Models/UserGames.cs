@@ -13,7 +13,7 @@ namespace KeyStore.Models
         public int userid { get; set; }
         public required User User { get; set; }
 
-        [ForeignKey("gameid")]
+        [ForeignKey("Game")]
         [Required]
         public int gameid { get; set; }        
         public required Game Game { get; set; }

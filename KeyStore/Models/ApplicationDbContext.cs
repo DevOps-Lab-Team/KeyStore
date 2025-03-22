@@ -13,7 +13,7 @@ namespace KeyStore.Models
         public DbSet<Game> Game { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserGame> UserGame { get; set; }
-        public DbSet<UserRole> Role { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
