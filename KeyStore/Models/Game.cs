@@ -24,5 +24,9 @@ namespace KeyStore.Models
         /// </summary>
         [Required]
         public string? genre { get; set; }
+        /// <summary>
+        /// Обложка
+        /// </summary>
+        public string? img { get; set; }
     }
 }
