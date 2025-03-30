@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KeyStore.Migrations
 {
     /// <inheritdoc />
-    public partial class initial_migration : Migration
+    public partial class TestAttemptCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,8 @@ namespace KeyStore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
-                    genre = table.Column<string>(type: "text", nullable: false)
+                    genre = table.Column<string>(type: "text", nullable: false),
+                    img = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,7 +30,7 @@ namespace KeyStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "UserRole",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -38,7 +39,7 @@ namespace KeyStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.id);
+                    table.PrimaryKey("PK_UserRole", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,9 +56,9 @@ namespace KeyStore.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.id);
                     table.ForeignKey(
-                        name: "FK_User_Role_roleid",
+                        name: "FK_User_UserRole_roleid",
                         column: x => x.roleid,
-                        principalTable: "Role",
+                        principalTable: "UserRole",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -90,14 +91,14 @@ namespace KeyStore.Migrations
 
             migrationBuilder.InsertData(
                 table: "Game",
-                columns: new[] { "id", "genre", "name", "price" },
+                columns: new[] { "id", "genre", "img", "name", "price" },
                 values: new object[,]
                 {
-                    { 1, "RTS", "Starcraft Brood War", 500m },
-                    { 2, "RPG", "Diablo II", 1000m },
-                    { 3, "Rouge Like", "Balatro", 550m },
-                    { 4, "Shooter", "Ultrakill", 450m },
-                    { 5, "Rouge Like", "Noita", 700m }
+                    { 1, "RTS", "https://upload.wikimedia.org/wikipedia/ru/f/fe/StarcraftBW.jpg", "Starcraft Brood War", 500m },
+                    { 2, "RPG", "https://upload.wikimedia.org/wikipedia/ru/thumb/0/0e/Bliz_diablo2_lg.jpg/640px-Bliz_diablo2_lg.jpg", "Diablo II", 1000m },
+                    { 3, "Rouge Like", "https://image.api.playstation.com/vulcan/ap/rnd/202401/2218/d8c5d5861249cd80a300efb723450f56d0347e4345e2eb80.png?w=960&h=960", "Balatro", 550m },
+                    { 4, "Shooter", "https://upload.wikimedia.org/wikipedia/ru/4/48/Ultrakill_cover.png", "Ultrakill", 450m },
+                    { 5, "Rouge Like", "https://m.media-amazon.com/images/M/MV5BZGEwZDBjODAtMGFjOS00OTZmLTg2OGItZDYyMTE3MjFmOGMyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", "Noita", 700m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -130,7 +131,7 @@ namespace KeyStore.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "UserRole");
         }
     }
 }
