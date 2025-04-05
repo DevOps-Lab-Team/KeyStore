@@ -16,20 +16,34 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-
-      - name: Build solution
-        run: dotnet build KeyStore.sln --configuration Release
       
-      - name: Restore
+      - name: Restore dependencies
         run: dotnet restore KeyStore.sln
 
-      - name: Run tests
-        run: dotnet test --logger trx --results-directory TestResults
+      - name: Build solution
+        run: dotnet build KeyStore.sln --configuration Release --no-restore
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: ./published-tests
 
   test:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: test-artifacts
+          path: ./tests
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+        
       - name: Run tests
-        run: dotnet test --logger trx --results-directory TestResults
+        run: dotnet test ./tests/KeyStore.Tests.dll --logger trx
