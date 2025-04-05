@@ -1,4 +1,5 @@
-﻿using KeyStore.Controllers;
+﻿using AutoMapper;
+using KeyStore.Controllers;
 using KeyStore.Models;
 using KeyStore.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace Tests
             // Arrange
             var mockLogger = new Mock<ILogger<GameController>>();
             var mockRepo = new Mock<IGameRepository>();
+            var mockMapper = new Mock<IMapper>();
             var expectedGames = new List<Game>
             {
                 new Game { id = 1, name = "Starcraft Brood War", price = 500, genre = "RTS" },
@@ -24,12 +26,12 @@ namespace Tests
                 new Game { id = 4, name = "Ultrakill", price = 450, genre = "Shooter" },
                 new Game { id = 5, name = "Noita", price = 700, genre = "Rouge Like" }
             };
-            mockRepo.Setup(repo => repo.GetGames).Returns(expectedGames);
+            mockRepo.Setup(repo => repo.GetGames()).Returns(expectedGames);
 
-            var controller = new GameController(mockLogger.Object, mockRepo.Object);
+            var controller = new GameController(mockLogger.Object, mockRepo.Object, mockMapper.Object);
 
             // Act
-            var result = controller.Get();
+            var result = controller.GetGames();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -43,11 +45,12 @@ namespace Tests
             // Arrange
             var mockLogger = new Mock<ILogger<GameController>>();
             var mockRepo = new Mock<IGameRepository>();
-            var controller = new GameController(mockLogger.Object, mockRepo.Object);
+            var mockMapper = new Mock<IMapper>();
+            var controller = new GameController(mockLogger.Object, mockRepo.Object, mockMapper.Object);
             controller.ModelState.AddModelError("error", "some error");
 
             // Act
-            var result = controller.Get();
+            var result = controller.GetGames();
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);

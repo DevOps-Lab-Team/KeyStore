@@ -1,3 +1,4 @@
+using KeyStore.Dto;
 using KeyStore.Models;
 using KeyStore.Models.Repository;
 using KeyStore.Utils;
@@ -15,6 +16,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //Dependency Injection
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 var app = builder.Build();

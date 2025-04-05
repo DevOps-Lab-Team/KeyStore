@@ -1,6 +1,6 @@
 @KeyStore_HostAddress = https://localhost:7159
 
-GET {{KeyStore_HostAddress}}/game/
+GET {{KeyStore_HostAddress}}/GetGames/
 Accept: application/json
 
 ###

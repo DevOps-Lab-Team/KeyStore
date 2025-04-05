@@ -1,0 +1,24 @@
+﻿services:
+  keystore:
+    image: keystore
+    container_name: keystore
+    build:
+      context: .
+      dockerfile: KeyStore/Dockerfile
+    ports:
+      - "16874:8080"
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    container_name: pg
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=TestAttempt
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
