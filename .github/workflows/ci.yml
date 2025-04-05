@@ -24,7 +24,7 @@ jobs:
         run: dotnet build KeyStore.sln --configuration Release --no-restore
 
       - name: Publish test project
-        run: dotnet publish KeyStore.Tests/KeyStore.Tests.csproj --configuration Release --output ./published-tests
+        run: dotnet publish KeyStore/Tests.csproj --configuration Release --output ./published-tests
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
