@@ -20,7 +20,6 @@ namespace KeyStore.Controllers
             this._gameRepository = gameRepo;
             _mapper = mapper;
         }
-        //
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Game>))]
