@@ -3,6 +3,8 @@ name: Build and Test KeyStore
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build-and-test:
@@ -19,12 +21,9 @@ jobs:
 
       - name: Build solution
         run: dotnet build KeyStore.sln --configuration Release
-      
-      -name: Restore
-        run dotnet restore KeyStore.sln
-
-      - name: Run tests
-        run: dotnet test KeyStore.sln --configuration Release --no-restore --logger trx
 
       - name: Run Docker Compose
         run: docker-compose up -d
+
+      - name: Run tests
+        run: dotnet test KeyStore.sln --logger trx
