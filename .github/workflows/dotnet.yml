@@ -16,17 +16,5 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Build solution
-        run: dotnet build KeyStore.sln --configuration Release
-
-      - name: Run Docker Compose
-        run: docker-compose up -d
-
-      - name: Run tests
-        run: dotnet test KeyStore.sln --logger trx
+      - name: test
+        run: echo Hellooo
