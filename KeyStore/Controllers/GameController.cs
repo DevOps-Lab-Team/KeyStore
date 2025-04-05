@@ -13,7 +13,6 @@ namespace KeyStore.Controllers
         private readonly ILogger<GameController> _logger;
         private readonly IGameRepository _gameRepository;
         private readonly IMapper _mapper;
-        //
 
         public GameController(ILogger<GameController> logger, IGameRepository gameRepo, IMapper mapper)
         {
