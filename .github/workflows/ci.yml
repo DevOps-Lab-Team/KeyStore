@@ -24,7 +24,4 @@ jobs:
         run: dotnet restore KeyStore.sln
 
       - name: Run tests
-        run: dotnet test KeyStore.sln --configuration Release --no-restore --logger trx
-
-      - name: Run Docker Compose
-        run: docker-compose up -d
+        run: dotnet test --logger trx --results-directory TestResults
