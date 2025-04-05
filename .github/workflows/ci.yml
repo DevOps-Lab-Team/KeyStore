@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,22 +17,11 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore KeyStore.sln
 
       - name: Build solution
-        run: dotnet build KeyStore.sln --configuration Release --no-restore
-        
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
+        run: dotnet build KeyStore.sln --configuration Release
 
       - name: Run tests
-        run: dotnet test --logger trx --results-directory TestResults
+        run: dotnet test KeyStore.sln --configuration Release --no-restore --logger trx
