@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +23,13 @@ jobs:
       - name: Restore
         run: dotnet restore KeyStore.sln
 
+      - name: Run tests
+        run: dotnet test --logger trx --results-directory TestResults
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Run tests
         run: dotnet test --logger trx --results-directory TestResults
