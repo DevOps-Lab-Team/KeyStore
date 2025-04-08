@@ -14,24 +14,6 @@ env:
   DB_NAME: ${{ secrets.DB_NAME }}
 
 jobs:
-#  test:
-#    needs: build
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Download build artifacts
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: test-artifacts
-#          path: ./tests
-#
-#      - name: Set up .NET
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: '9.0.x'
-#
-#      - name: Run tests
-#        run: dotnet vstest ./tests/Tests.dll --logger:trx
 
   build:
     runs-on: ubuntu-latest
@@ -53,20 +35,3 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           context: .
           file: KeyStore/Dockerfile
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /srv/Keystore
-            echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            docker-compose -f /srv/KeyStore/docker-compose.yaml up -d
