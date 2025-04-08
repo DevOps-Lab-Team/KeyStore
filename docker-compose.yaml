@@ -1,6 +1,6 @@
 ﻿services:
   keystore-backend:
-    image: keystore-backend
+    image: skoptenco/keystore-backend
     container_name: keystore-backend
     build:
       context: .

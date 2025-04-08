@@ -69,4 +69,4 @@ jobs:
             cd /srv/Keystore
             echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            docker-compose -f /srv/KeyStore/docker-compose.yml up -d
+            docker-compose -f /srv/KeyStore/docker-compose.yaml up -d
