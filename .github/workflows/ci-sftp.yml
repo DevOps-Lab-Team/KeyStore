@@ -1,0 +1,80 @@
+name: Build, Test and Deploy KeyStore via SFTP
+
+on:
+  push:
+    branches: [ "sftp-ci" ]
+  pull_request:
+    branches: [ "sftp-ci" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore KeyStore.sln
+
+      - name: Build solution
+        run: dotnet build KeyStore.sln --configuration Release --no-restore
+
+      - name: Publish test project
+        run: dotnet publish Tests/Tests.csproj --configuration Release --output build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+
+#  test:
+#    needs: build
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Download build artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: build
+#          path: build
+#
+#      - name: Set up .NET
+#        uses: actions/setup-dotnet@v3
+#        with:
+#          dotnet-version: '9.0.x'
+#
+#      - name: Run tests
+#        run: dotnet vstest ./tests/Tests.dll --logger:trx
+
+  deploy:
+#    needs: test
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+
+      - name: Deploy with Password
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        with:
+          username: ${{ secrets.SSH_USERNAME }}
+          server: ${{ secrets.SSH_HOST }}
+          port: 22
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          local_path: './build/*'
+          remote_path: '/var/www/rest/'
+          sftp_only: true
+#          password: ${{ secrets.FTP_PASSWORD }}
