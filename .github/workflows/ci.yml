@@ -50,3 +50,4 @@ jobs:
 
       - name: Run tests
         run: dotnet vstest ./tests/Tests.dll --logger:trx          
+
