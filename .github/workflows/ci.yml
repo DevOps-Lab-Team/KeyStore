@@ -1,4 +1,4 @@
-name: Build, Test and Deploy KeyStore
+name: keystore-backend CI/CD
 
 on:
   push:
